@@ -1,0 +1,40 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+    lintOptions {
+        abortOnError false
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+}
+task deleteJar(type: Delete) {
+    delete 'build/common.jar'
+}
+task makeJar(type: Jar) {
+    from zipTree(file('build/intermediates/bundles/release/classes.jar'))
+//    from fileTree(dir: 'libs',includes: ['**/*.so'])
+//    from fileTree(dir: 'src/main',includes: ['assets/**'],excludes:[''])//将assets目录打入jar包
+    baseName 'common'
+    destinationDir = file('build/')
+}
+makeJar.dependsOn(deleteJar, build)
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:appcompat-v7:27.1.1"
+}
