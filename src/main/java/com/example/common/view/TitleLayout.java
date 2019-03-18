@@ -156,7 +156,7 @@ public class TitleLayout extends View {
 
     private void notifyListener() {
 //        invalidate();
-        requestLayout();
+//        requestLayout();
         onClickListener.getCurrentView(index);
     }
 
